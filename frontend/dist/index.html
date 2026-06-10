@@ -136,6 +136,12 @@
             -webkit-text-fill-color: var(--glow-green);
         }
 
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         nav {
             display: flex;
             gap: 25px;
@@ -1125,6 +1131,41 @@
         :root[data-theme="light"] #availability-grid th {
             color: var(--text-secondary);
         }
+
+        /* Back to Hub button styling */
+        .back-hub-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-hub-btn:hover {
+            color: var(--glow-purple);
+            border-color: var(--glow-purple);
+            background: rgba(108, 122, 196, 0.1);
+            transform: translateX(-3px);
+            box-shadow: 0 0 8px rgba(108, 122, 196, 0.25);
+        }
+
+        .back-hub-btn svg {
+            stroke: currentColor !important;
+            filter: none !important;
+        }
+
+        :root[data-theme="light"] .back-hub-btn {
+            background: rgba(0, 0, 0, 0.02);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -1169,7 +1210,12 @@
 
     <!-- Header Section -->
     <header>
-        <div class="logo" style="cursor: pointer;" onclick="switchTab('dashboard')">Bibi <span>v2.0 MVP</span></div>
+        <div class="logo-group">
+            <a href="/" class="back-hub-btn" title="Powrót do Bike Tools Hub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </a>
+            <div class="logo" style="cursor: pointer;" onclick="switchTab('dashboard')">Bibi <span>v2.0 MVP</span></div>
+        </div>
         <nav style="display: flex; align-items: center; gap: 25px;">
             <a onclick="switchTab('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
             <a onclick="switchTab('analytics')" id="nav-analytics">PMC Simulator</a>
