@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_replace_me}
       POSTGRES_DB: ${POSTGRES_DB:-bibi_db}
     volumes:
-      - ${ENV_PREFIX:-prod}-postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:${BIBI_DB_PORT:-5432}:5432"
     healthcheck:
@@ -34,7 +34,7 @@ services:
       - "${BIBI_API_PORT:-8080}:8000"
     volumes:
       - ./backend:/app
-      - ${ENV_PREFIX:-prod}-raw_s3_payloads:/app/storage
+      - raw_s3_payloads:/app/storage
 
   bibi-frontend:
     build:
