@@ -35,7 +35,7 @@
             --card-bg: rgba(20, 20, 28, 0.4);
             --card-border: rgba(255, 255, 255, 0.08);
             --glow-green: #609c8d;
-            --glow-purple: #6c7ac4;
+            --glow-purple: #a855f7;
             --glow-red: #db7b88;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b0;
@@ -50,7 +50,7 @@
                 --card-bg: rgba(255, 255, 255, 0.75);
                 --card-border: rgba(0, 0, 0, 0.08);
                 --glow-green: #3b7e6f;
-                --glow-purple: #4e5ca6;
+                --glow-purple: #7c3aed;
                 --glow-red: #c05c6a;
                 --text-primary: #1e293b;
                 --text-secondary: #475569;
@@ -63,7 +63,7 @@
             --card-bg: rgba(255, 255, 255, 0.75);
             --card-border: rgba(0, 0, 0, 0.08);
             --glow-green: #3b7e6f;
-            --glow-purple: #4e5ca6;
+            --glow-purple: #7c3aed;
             --glow-red: #c05c6a;
             --text-primary: #1e293b;
             --text-secondary: #475569;
@@ -75,7 +75,7 @@
             --card-bg: rgba(20, 20, 28, 0.4);
             --card-border: rgba(255, 255, 255, 0.08);
             --glow-green: #609c8d;
-            --glow-purple: #6c7ac4;
+            --glow-purple: #a855f7;
             --glow-red: #db7b88;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b0;
@@ -90,7 +90,7 @@
         body {
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(108, 122, 196, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(96, 156, 141, 0.08) 0%, transparent 45%);
             color: var(--text-primary);
             font-family: var(--font-inter);
@@ -288,7 +288,7 @@
             font-weight: 700;
         }
 
-        .metric-value.ctl { color: #6c7ac4; text-shadow: 0 0 10px rgba(108, 122, 196, 0.3); }
+        .metric-value.ctl { color: var(--glow-purple); text-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
         .metric-value.atl { color: #db7b88; text-shadow: 0 0 10px rgba(219, 123, 136, 0.3); }
         .metric-value.tsb { color: var(--glow-green); text-shadow: 0 0 10px rgba(96, 156, 141, 0.3); }
 
@@ -327,7 +327,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, rgba(108, 122, 196, 0.2) 0%, rgba(96, 156, 141, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(96, 156, 141, 0.2) 100%);
             border: 1px solid var(--glow-green);
             color: var(--text-primary);
             font-family: var(--font-outfit);
@@ -339,7 +339,7 @@
         }
 
         .btn:hover {
-            background: linear-gradient(135deg, rgba(108, 122, 196, 0.4) 0%, rgba(96, 156, 141, 0.4) 100%);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(96, 156, 141, 0.4) 100%);
             box-shadow: 0 0 15px rgba(96, 156, 141, 0.3);
             transform: scale(1.02);
         }
@@ -375,7 +375,7 @@
         }
 
         .message.user {
-            background: rgba(108, 122, 196, 0.1);
+            background: rgba(168, 85, 247, 0.1);
             color: var(--text-primary);
             align-self: flex-end;
             margin-left: auto;
@@ -687,8 +687,8 @@
 
         .option-card.selected-purple {
             border-color: var(--glow-purple);
-            background: rgba(108, 122, 196, 0.06);
-            box-shadow: 0 0 10px rgba(108, 122, 196, 0.15);
+            background: rgba(168, 85, 247, 0.06);
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.15);
         }
 
         .option-card-title {
@@ -899,7 +899,7 @@
             padding: 40px;
             width: 420px;
             max-width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(108, 122, 196, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(168, 85, 247, 0.12);
             backdrop-filter: blur(25px);
         }
 
@@ -1058,7 +1058,7 @@
         }
 
         :root[data-theme="light"] .message.user {
-            background: rgba(108, 122, 196, 0.15);
+            background: rgba(124, 58, 237, 0.15);
             color: #1e293b;
         }
 
@@ -1303,7 +1303,7 @@
                                 <span style="color: var(--glow-purple); font-family: var(--font-outfit); font-weight: 700; font-size: 13px; text-transform: uppercase;">Today's Prescription</span>
                                 <h2 style="font-family: var(--font-outfit); font-size: 24px; font-weight: 700; margin-top: 5px;">VO2 Max Intervals: 4x4 min</h2>
                             </div>
-                            <span style="background: rgba(108, 122, 196, 0.15); color: var(--glow-purple); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">80 TSS Target</span>
+                            <span style="background: rgba(168, 85, 247, 0.15); color: var(--glow-purple); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">80 TSS Target</span>
                         </div>
                         <div class="workout-meta">Duration: <strong>1h 15m</strong> | Phase: <strong>VO2 Max Expansion</strong> | Format: <strong>4 intervals at 115% FTP, 4 mins recovery</strong></div>
                         
@@ -1334,7 +1334,7 @@
                                 <defs>
                                     <linearGradient id="purpleGrad" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="0%" stop-color="var(--glow-purple)" />
-                                        <stop offset="100%" stop-color="rgba(108, 122, 196, 0.2)" />
+                                        <stop offset="100%" stop-color="rgba(168, 85, 247, 0.2)" />
                                     </linearGradient>
                                 </defs>
                             </svg>
@@ -1409,7 +1409,7 @@
                         <polygon id="tsb-poly" points="50,300 950,300" fill="rgba(96, 156, 141, 0.05)" />
 
                         <!-- Paths for PMC lines -->
-                        <path id="path-ctl" d="" fill="none" stroke="#6c7ac4" stroke-width="4" />
+                        <path id="path-ctl" d="" fill="none" stroke="var(--glow-purple)" stroke-width="4" />
                         <path id="path-atl" d="" fill="none" stroke="#db7b88" stroke-width="2.5" />
                         <path id="path-tsb" d="" fill="none" stroke="var(--glow-green)" stroke-width="2" />
                         
