@@ -36,6 +36,15 @@ services:
       - ./backend:/app
       - raw_s3_payloads:/app/storage
 
+  bibi-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bibi-frontend
+    restart: unless-stopped
+    ports:
+      - "8083:80"
+
 volumes:
   postgres_data:
     driver: local
