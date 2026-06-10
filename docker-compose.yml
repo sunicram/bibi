@@ -1,0 +1,43 @@
+services:
+  bibi-postgres:
+    image: postgres:16-alpine
+    container_name: bibi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bibi_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_replace_me}
+      POSTGRES_DB: ${POSTGRES_DB:-bibi_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bibi_admin} -d ${POSTGRES_DB:-bibi_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  bibi-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bibi-api
+    restart: unless-stopped
+    depends_on:
+      bibi-postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: bibi-postgres
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./backend:/app
+      - raw_s3_payloads:/app/storage
+
+volumes:
+  postgres_data:
+    driver: local
+  raw_s3_payloads:
+    driver: local

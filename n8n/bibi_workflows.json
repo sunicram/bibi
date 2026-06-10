@@ -1,0 +1,175 @@
+{
+  "name": "Bibi — Inbound Activity Ingestion & Safety Router",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bibi-activity-webhook",
+        "options": {}
+      },
+      "name": "Intervals.icu Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/activities/upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {}
+      },
+      "name": "HTTP: Ingest FIT File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [480, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bibi_auth_header",
+          "name": "Bibi API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json.adherence_score}}",
+              "operation": "smaller",
+              "value2": 70
+            }
+          ],
+          "boolean": [
+            {
+              "value1": "={{$json.wbal_depleted_flag}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Check Anomaly",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Intervals.icu Webhook Trigger\"].json.body.athlete.telegram_chat_id}}",
+        "text": "🎉 Nice job! You completed tomorrow's ride. TSS: {{$json.tss}}, NP: {{$json.normalized_power}}W. Recovery looks good.",
+        "replyMarkup": {
+          "inline_keyboard": [
+            [
+              {
+                "text": "🟢 Nailed it",
+                "callback_data": "outcome_green"
+              },
+              {
+                "text": "🟡 Hard / shortened",
+                "callback_data": "outcome_yellow"
+              },
+              {
+                "text": "🔴 Failed",
+                "callback_data": "outcome_red"
+              }
+            ]
+          ]
+        }
+      },
+      "name": "Telegram: Standard Feedback",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [950, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/n8n/amendment-proposal",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user_id",
+              "value": "={{$node[\"HTTP: Ingest FIT File\"].json.user_id}}"
+            },
+            {
+              "name": "trigger_type",
+              "value": "workout_failed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "HTTP: Propose Amendment",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [950, 400]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Intervals.icu Webhook Trigger\"].json.body.athlete.telegram_chat_id}}",
+        "text": "📋 Plan Safety Adjustment Applied:\n\n*What changed*: {{$json.new_title}}\n*Why*: {{$json.explanation}}\n\nThis has been verified by safety review algorithms."
+      },
+      "name": "Telegram: Send Adjustment Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1180, 400]
+    }
+  ],
+  "connections": {
+    "Intervals.icu Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP: Ingest FIT File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: Ingest FIT File": {
+      "main": [
+        [
+          {
+            "node": "Check Anomaly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Anomaly": {
+      "main": [
+        [
+          {
+            "node": "Telegram: Standard Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP: Propose Amendment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP: Propose Amendment": {
+      "main": [
+        [
+          {
+            "node": "Telegram: Send Adjustment Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
