@@ -9,8 +9,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <script>
+        // Prevent theme flash
+        (function() {
+            try {
+                const saved = localStorage.getItem('bibi_profile');
+                if (saved) {
+                    const profile = JSON.parse(saved);
+                    if (profile.theme === 'light') {
+                        document.documentElement.setAttribute('data-theme', 'light');
+                    } else if (profile.theme === 'dark') {
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                    }
+                }
+            } catch (e) {
+                console.warn(e);
+            }
+        })();
+    </script>
+    
     <style>
         :root {
+            /* Default: Dark Theme Variables (System by default, or fallback) */
             --bg-color: #08080c;
             --card-bg: rgba(20, 20, 28, 0.4);
             --card-border: rgba(255, 255, 255, 0.08);
@@ -21,6 +41,44 @@
             --text-secondary: #a0a0b0;
             --font-outfit: 'Outfit', sans-serif;
             --font-inter: 'Inter', sans-serif;
+        }
+
+        /* System Light Theme fallback */
+        @media (prefers-color-scheme: light) {
+            :root:not([data-theme="dark"]) {
+                --bg-color: #f4f6fa;
+                --card-bg: rgba(255, 255, 255, 0.75);
+                --card-border: rgba(0, 0, 0, 0.08);
+                --glow-green: #3b7e6f;
+                --glow-purple: #4e5ca6;
+                --glow-red: #c05c6a;
+                --text-primary: #1e293b;
+                --text-secondary: #475569;
+            }
+        }
+
+        /* Explicit Light Theme Override */
+        :root[data-theme="light"] {
+            --bg-color: #f4f6fa;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --glow-green: #3b7e6f;
+            --glow-purple: #4e5ca6;
+            --glow-red: #c05c6a;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+        }
+
+        /* Explicit Dark Theme Override */
+        :root[data-theme="dark"] {
+            --bg-color: #08080c;
+            --card-bg: rgba(20, 20, 28, 0.4);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glow-green: #609c8d;
+            --glow-purple: #6c7ac4;
+            --glow-red: #db7b88;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
         }
 
         * {
@@ -927,6 +985,146 @@
             height: 8px;
             border-radius: 50%;
         }
+
+        /* --- Theme Toggle and Light Mode Enhancements --- */
+        .theme-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.25rem;
+            border-radius: 30px;
+            border: 1px solid var(--card-border);
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        :root[data-theme="light"] .theme-toggle {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 0.72rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toggle-btn.active {
+            background: var(--glow-green);
+            color: #000000;
+            box-shadow: 0 0 10px rgba(96, 156, 141, 0.3);
+        }
+
+        /* Light Theme overrides for specific components */
+        :root[data-theme="light"] header {
+            background: rgba(244, 246, 250, 0.7);
+        }
+
+        :root[data-theme="light"] dialog {
+            background: rgba(255, 255, 255, 0.98);
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] .form-input {
+            background: rgba(0, 0, 0, 0.03);
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] .option-card {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="light"] .avail-cell {
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        :root[data-theme="light"] .message.coach {
+            background: rgba(96, 156, 141, 0.08);
+            color: #334155;
+        }
+
+        :root[data-theme="light"] .message.user {
+            background: rgba(108, 122, 196, 0.15);
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] .wellness-item {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="light"] .chart-controls {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="light"] .summary-block {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="light"] .dropzone {
+            background: rgba(0, 0, 0, 0.01);
+        }
+
+        :root[data-theme="light"] .dropzone:hover, 
+        :root[data-theme="light"] .dropzone.dragover {
+            background: rgba(96, 156, 141, 0.05);
+        }
+
+        :root[data-theme="light"] input.chat-input {
+            background: rgba(0, 0, 0, 0.03);
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] select.form-input {
+            color: #1e293b;
+            background-color: #ffffff;
+        }
+
+        :root[data-theme="light"] select.form-input option {
+            background-color: #ffffff;
+            color: #1e293b;
+        }
+
+        :root[data-theme="light"] .btn-secondary {
+            background: transparent;
+            border-color: rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+        }
+
+        :root[data-theme="light"] .btn-secondary:hover {
+            color: var(--text-primary);
+            border-color: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="light"] .wizard-steps::before {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        :root[data-theme="light"] .step-bubble {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        :root[data-theme="light"] .step-indicator.active .step-bubble {
+            border-color: var(--glow-green);
+        }
+
+        :root[data-theme="light"] .step-indicator.completed .step-bubble {
+            border-color: var(--glow-purple);
+            background: var(--glow-purple);
+        }
+
+        :root[data-theme="light"] #availability-grid th {
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -977,6 +1175,20 @@
             <a onclick="switchTab('analytics')" id="nav-analytics">PMC Simulator</a>
             <a onclick="switchTab('calendar')" id="nav-calendar">Calendar</a>
             <a onclick="switchTab('profile')" id="nav-profile">Profile Settings</a>
+            
+            <!-- Theme Mode Switcher -->
+            <div class="theme-toggle">
+                <button type="button" class="toggle-btn" id="theme-light-btn" title="Light Mode">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:2px; vertical-align:middle;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>LIGHT
+                </button>
+                <button type="button" class="toggle-btn" id="theme-dark-btn" title="Dark Mode">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:2px; vertical-align:middle;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>DARK
+                </button>
+                <button type="button" class="toggle-btn active" id="theme-system-btn" title="System Auto Mode">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:2px; vertical-align:middle;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>AUTO
+                </button>
+            </div>
+
             <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </nav>
     </header>
@@ -2260,8 +2472,81 @@ Generated training zones are active and synched.`);
             alert("You have been logged out successfully.");
         }
 
+        // Theme State Management
+        let themeState = {
+            theme: 'system' // 'system', 'light', 'dark'
+        };
+
+        // Initialize Theme Switcher
+        function initTheme() {
+            const themeLightBtn = document.getElementById('theme-light-btn');
+            const themeDarkBtn = document.getElementById('theme-dark-btn');
+            const themeSystemBtn = document.getElementById('theme-system-btn');
+            const root = document.documentElement;
+
+            if (!themeLightBtn || !themeDarkBtn || !themeSystemBtn) return;
+
+            // Load theme from localStorage
+            const saved = localStorage.getItem('bibi_profile');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.theme) {
+                        themeState.theme = parsed.theme;
+                    }
+                } catch (e) {
+                    console.warn("Could not parse cached theme profile", e);
+                }
+            }
+
+            function applyTheme() {
+                if (themeState.theme === 'light') {
+                    root.setAttribute('data-theme', 'light');
+                    themeLightBtn.classList.add('active');
+                    themeDarkBtn.classList.remove('active');
+                    themeSystemBtn.classList.remove('active');
+                } else if (themeState.theme === 'dark') {
+                    root.setAttribute('data-theme', 'dark');
+                    themeLightBtn.classList.remove('active');
+                    themeDarkBtn.classList.add('active');
+                    themeSystemBtn.classList.remove('active');
+                } else {
+                    root.removeAttribute('data-theme');
+                    themeLightBtn.classList.remove('active');
+                    themeDarkBtn.classList.remove('active');
+                    themeSystemBtn.classList.add('active');
+                }
+                // Save to localStorage
+                localStorage.setItem('bibi_profile', JSON.stringify(themeState));
+            }
+
+            // Set up click handlers
+            themeLightBtn.addEventListener('click', () => {
+                themeState.theme = 'light';
+                applyTheme();
+            });
+            themeDarkBtn.addEventListener('click', () => {
+                themeState.theme = 'dark';
+                applyTheme();
+            });
+            themeSystemBtn.addEventListener('click', () => {
+                themeState.theme = 'system';
+                applyTheme();
+            });
+
+            // Listen to system theme change if in system auto mode
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                if (themeState.theme === 'system') {
+                    applyTheme();
+                }
+            });
+
+            applyTheme();
+        }
+
         // Render PMC and check auth on init
         window.onload = () => {
+            initTheme();
             renderPMC();
             checkAuth();
             switchTab('dashboard'); // Always start on home dashboard tab
