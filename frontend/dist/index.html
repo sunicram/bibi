@@ -34,9 +34,9 @@
             --bg-color: #08080c;
             --card-bg: rgba(20, 20, 28, 0.4);
             --card-border: rgba(255, 255, 255, 0.08);
-            --glow-green: #609c8d;
-            --glow-purple: #a855f7;
-            --glow-red: #db7b88;
+            --glow-green: #4eb59d;
+            --glow-purple: #965df4;
+            --glow-red: #eb6a7c;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b0;
             --font-outfit: 'Outfit', sans-serif;
@@ -74,9 +74,9 @@
             --bg-color: #08080c;
             --card-bg: rgba(20, 20, 28, 0.4);
             --card-border: rgba(255, 255, 255, 0.08);
-            --glow-green: #609c8d;
-            --glow-purple: #a855f7;
-            --glow-red: #db7b88;
+            --glow-green: #4eb59d;
+            --glow-purple: #965df4;
+            --glow-red: #eb6a7c;
             --text-primary: #ffffff;
             --text-secondary: #a0a0b0;
         }
@@ -90,8 +90,8 @@
         body {
             background-color: var(--bg-color);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(96, 156, 141, 0.08) 0%, transparent 45%);
+                radial-gradient(circle at 10% 20%, rgba(150, 93, 244, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(78, 181, 157, 0.08) 0%, transparent 45%);
             color: var(--text-primary);
             font-family: var(--font-inter);
             min-height: 100vh;
@@ -127,7 +127,7 @@
 
         .logo span {
             font-size: 14px;
-            background: rgba(96, 156, 141, 0.15);
+            background: rgba(78, 181, 157, 0.15);
             color: var(--glow-green);
             padding: 2px 8px;
             border-radius: 20px;
@@ -159,7 +159,7 @@
 
         nav a:hover, nav a.active {
             color: var(--text-primary);
-            text-shadow: 0 0 10px rgba(96, 156, 141, 0.4);
+            text-shadow: 0 0 10px rgba(78, 181, 157, 0.4);
         }
 
         /* --- Dashboard Grid Layout --- */
@@ -238,7 +238,7 @@
             height: 60px;
             border-radius: 50%;
             border: 4px solid var(--glow-green);
-            box-shadow: 0 0 15px rgba(96, 156, 141, 0.3);
+            box-shadow: 0 0 15px rgba(78, 181, 157, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -288,9 +288,9 @@
             font-weight: 700;
         }
 
-        .metric-value.ctl { color: var(--glow-purple); text-shadow: 0 0 10px rgba(168, 85, 247, 0.3); }
-        .metric-value.atl { color: #db7b88; text-shadow: 0 0 10px rgba(219, 123, 136, 0.3); }
-        .metric-value.tsb { color: var(--glow-green); text-shadow: 0 0 10px rgba(96, 156, 141, 0.3); }
+        .metric-value.ctl { color: var(--glow-purple); text-shadow: 0 0 10px rgba(150, 93, 244, 0.3); }
+        .metric-value.atl { color: var(--glow-red); text-shadow: 0 0 10px rgba(235, 106, 124, 0.3); }
+        .metric-value.tsb { color: var(--glow-green); text-shadow: 0 0 10px rgba(78, 181, 157, 0.3); }
 
         .metric-label {
             font-size: 12px;
@@ -327,7 +327,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(96, 156, 141, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(150, 93, 244, 0.2) 0%, rgba(78, 181, 157, 0.2) 100%);
             border: 1px solid var(--glow-green);
             color: var(--text-primary);
             font-family: var(--font-outfit);
@@ -339,8 +339,8 @@
         }
 
         .btn:hover {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(96, 156, 141, 0.4) 100%);
-            box-shadow: 0 0 15px rgba(96, 156, 141, 0.3);
+            background: linear-gradient(135deg, rgba(150, 93, 244, 0.4) 0%, rgba(78, 181, 157, 0.4) 100%);
+            box-shadow: 0 0 15px rgba(78, 181, 157, 0.3);
             transform: scale(1.02);
         }
 
@@ -368,14 +368,14 @@
         }
 
         .message.coach {
-            background: rgba(96, 156, 141, 0.06);
+            background: rgba(78, 181, 157, 0.06);
             border-left: 3px solid var(--glow-green);
             color: #d1d1e0;
             align-self: flex-start;
         }
 
         .message.user {
-            background: rgba(168, 85, 247, 0.1);
+            background: rgba(150, 93, 244, 0.1);
             color: var(--text-primary);
             align-self: flex-end;
             margin-left: auto;
@@ -414,7 +414,7 @@
 
         .dropzone:hover, .dropzone.dragover {
             border-color: var(--glow-green);
-            background: rgba(96, 156, 141, 0.02);
+            background: rgba(78, 181, 157, 0.02);
         }
 
         .dropzone svg {
@@ -487,7 +487,7 @@
             width: 90%;
             margin: auto;
             color: var(--text-primary);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(96, 156, 141, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(78, 181, 157, 0.1);
             backdrop-filter: blur(25px);
             overflow-y: auto;
             max-height: 90vh;
@@ -573,7 +573,7 @@
 
         .step-indicator.active .step-bubble {
             border-color: var(--glow-green);
-            box-shadow: 0 0 10px rgba(96, 156, 141, 0.4);
+            box-shadow: 0 0 10px rgba(78, 181, 157, 0.4);
             color: var(--glow-green);
             transform: scale(1.1);
         }
@@ -636,7 +636,7 @@
 
         .form-input:focus {
             border-color: var(--glow-green);
-            box-shadow: 0 0 8px rgba(96, 156, 141, 0.15);
+            box-shadow: 0 0 8px rgba(78, 181, 157, 0.15);
         }
 
         .form-select {
@@ -681,14 +681,14 @@
 
         .option-card.selected {
             border-color: var(--glow-green);
-            background: rgba(96, 156, 141, 0.06);
-            box-shadow: 0 0 10px rgba(96, 156, 141, 0.15);
+            background: rgba(78, 181, 157, 0.06);
+            box-shadow: 0 0 10px rgba(78, 181, 157, 0.15);
         }
 
         .option-card.selected-purple {
             border-color: var(--glow-purple);
-            background: rgba(168, 85, 247, 0.06);
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.15);
+            background: rgba(150, 93, 244, 0.06);
+            box-shadow: 0 0 10px rgba(150, 93, 244, 0.15);
         }
 
         .option-card-title {
@@ -736,7 +736,7 @@
         }
 
         .avail-cell.active {
-            background: rgba(96, 156, 141, 0.15);
+            background: rgba(78, 181, 157, 0.15);
             color: var(--glow-green);
             border: 1px solid var(--glow-green);
             font-weight: 600;
@@ -769,9 +769,9 @@
         }
 
         .btn-danger {
-            background: rgba(219, 123, 136, 0.1);
+            background: rgba(235, 106, 124, 0.1);
             border: 1px solid var(--glow-red);
-            color: #db7b88;
+            color: var(--glow-red);
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
@@ -781,8 +781,8 @@
         }
 
         .btn-danger:hover {
-            background: rgba(219, 123, 136, 0.2);
-            box-shadow: 0 0 10px rgba(219, 123, 136, 0.2);
+            background: rgba(235, 106, 124, 0.2);
+            box-shadow: 0 0 10px rgba(235, 106, 124, 0.2);
         }
 
         /* --- Custom Checkbox / Consent List --- */
@@ -826,8 +826,8 @@
         .input-helper {
             font-size: 10px;
             color: var(--glow-green);
-            background: rgba(96, 156, 141, 0.08);
-            border: 1px solid rgba(96, 156, 141, 0.2);
+            background: rgba(78, 181, 157, 0.08);
+            border: 1px solid rgba(78, 181, 157, 0.2);
             border-radius: 4px;
             padding: 2px 6px;
             cursor: pointer;
@@ -837,7 +837,7 @@
         }
 
         .input-helper:hover {
-            background: rgba(96, 156, 141, 0.15);
+            background: rgba(78, 181, 157, 0.15);
             border-color: var(--glow-green);
         }
 
@@ -899,7 +899,7 @@
             padding: 40px;
             width: 420px;
             max-width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(168, 85, 247, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(150, 93, 244, 0.12);
             backdrop-filter: blur(25px);
         }
 
@@ -953,8 +953,8 @@
         }
 
         .logout-btn:hover {
-            background: rgba(219, 123, 136, 0.1);
-            box-shadow: 0 0 10px rgba(219, 123, 136, 0.2);
+            background: rgba(235, 106, 124, 0.1);
+            box-shadow: 0 0 10px rgba(235, 106, 124, 0.2);
             transform: scale(1.03);
         }
 
@@ -974,7 +974,7 @@
 
         .back-link:hover {
             color: var(--text-primary);
-            text-shadow: 0 0 8px rgba(96, 156, 141, 0.4);
+            text-shadow: 0 0 8px rgba(78, 181, 157, 0.4);
         }
 
         .readiness-badge {
@@ -1026,7 +1026,7 @@
         .toggle-btn.active {
             background: var(--glow-green);
             color: #000000;
-            box-shadow: 0 0 10px rgba(96, 156, 141, 0.3);
+            box-shadow: 0 0 10px rgba(78, 181, 157, 0.3);
         }
 
         /* Light Theme overrides for specific components */
@@ -1053,7 +1053,7 @@
         }
 
         :root[data-theme="light"] .message.coach {
-            background: rgba(96, 156, 141, 0.08);
+            background: rgba(78, 181, 157, 0.08);
             color: #334155;
         }
 
@@ -1080,7 +1080,7 @@
 
         :root[data-theme="light"] .dropzone:hover, 
         :root[data-theme="light"] .dropzone.dragover {
-            background: rgba(96, 156, 141, 0.05);
+            background: rgba(78, 181, 157, 0.05);
         }
 
         :root[data-theme="light"] input.chat-input {
@@ -1149,11 +1149,11 @@
         }
 
         .back-hub-btn:hover {
-            color: #a855f7;
-            border-color: #a855f7;
-            background: rgba(168, 85, 247, 0.1);
+            color: var(--glow-purple);
+            border-color: var(--glow-purple);
+            background: rgba(150, 93, 244, 0.1);
             transform: translateX(-3px);
-            box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+            box-shadow: 0 0 8px rgba(150, 93, 244, 0.25);
         }
 
         .back-hub-btn svg {
@@ -1303,7 +1303,7 @@
                                 <span style="color: var(--glow-purple); font-family: var(--font-outfit); font-weight: 700; font-size: 13px; text-transform: uppercase;">Today's Prescription</span>
                                 <h2 style="font-family: var(--font-outfit); font-size: 24px; font-weight: 700; margin-top: 5px;">VO2 Max Intervals: 4x4 min</h2>
                             </div>
-                            <span style="background: rgba(168, 85, 247, 0.15); color: var(--glow-purple); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">80 TSS Target</span>
+                            <span style="background: rgba(150, 93, 244, 0.15); color: var(--glow-purple); padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">80 TSS Target</span>
                         </div>
                         <div class="workout-meta">Duration: <strong>1h 15m</strong> | Phase: <strong>VO2 Max Expansion</strong> | Format: <strong>4 intervals at 115% FTP, 4 mins recovery</strong></div>
                         
@@ -1334,7 +1334,7 @@
                                 <defs>
                                     <linearGradient id="purpleGrad" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="0%" stop-color="var(--glow-purple)" />
-                                        <stop offset="100%" stop-color="rgba(168, 85, 247, 0.2)" />
+                                        <stop offset="100%" stop-color="rgba(150, 93, 244, 0.2)" />
                                     </linearGradient>
                                 </defs>
                             </svg>
@@ -1406,11 +1406,11 @@
                         <line x1="50" y1="300" x2="950" y2="300" stroke="rgba(255,255,255,0.05)" />
 
                         <!-- TSB Area shading -->
-                        <polygon id="tsb-poly" points="50,300 950,300" fill="rgba(96, 156, 141, 0.05)" />
+                        <polygon id="tsb-poly" points="50,300 950,300" fill="rgba(78, 181, 157, 0.05)" />
 
                         <!-- Paths for PMC lines -->
                         <path id="path-ctl" d="" fill="none" stroke="var(--glow-purple)" stroke-width="4" />
-                        <path id="path-atl" d="" fill="none" stroke="#db7b88" stroke-width="2.5" />
+                        <path id="path-atl" d="" fill="none" stroke="var(--glow-red)" stroke-width="2.5" />
                         <path id="path-tsb" d="" fill="none" stroke="var(--glow-green)" stroke-width="2" />
                         
                         <!-- Intersections and labels (Dynamically generated by JS) -->
@@ -2051,7 +2051,7 @@
             // Animate card highlight
             const dropzone = document.getElementById('dropzone');
             dropzone.style.borderColor = 'var(--glow-green)';
-            dropzone.style.background = 'rgba(96, 156, 141, 0.1)';
+            dropzone.style.background = 'rgba(78, 181, 157, 0.1)';
             
             setTimeout(() => {
                 dropzone.style.borderColor = 'var(--card-border)';
