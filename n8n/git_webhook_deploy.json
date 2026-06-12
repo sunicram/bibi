@@ -1,0 +1,60 @@
+{
+  "name": "Bibi — GitHub CI/CD Auto-Deployment Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "github-deploy-webhook",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "Webhook: GitHub Push Event",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /var/www/bibi && git pull origin dev && docker compose up --build -d"
+      },
+      "name": "Execute Deploy Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [350, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "🚀 *Bibi AI Coach Auto-Deployment*\n\n✅ App successfully redeployed on VPS!\n\n*Commit*: `{{$node[\"Webhook: GitHub Push Event\"].json.body.head_commit.message}}`\n*Author*: `{{$node[\"Webhook: GitHub Push Event\"].json.body.head_commit.author.name}}`"
+      },
+      "name": "Telegram: Deploy Success Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [600, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: GitHub Push Event": {
+      "main": [
+        [
+          {
+            "node": "Execute Deploy Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Deploy Command": {
+      "main": [
+        [
+          {
+            "node": "Telegram: Deploy Success Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
