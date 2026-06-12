@@ -86,3 +86,47 @@ def compute_daily_wellness_metrics(
         "sleep_debt_minutes": sleep_debt,
         "readiness_tier": tier
     }
+
+def calculate_simplified_readyscore(
+    rpe_history: List[Optional[int]],
+    morning_feeling: Optional[int],
+    last_reserve: Optional[int]
+) -> float:
+    """Calculates a simplified readiness score (0.0 to 100.0) when wearables are missing.
+    
+    Formula: ReadyScore = (RPE_trend * 0.4) + (feeling_val * 0.4) + (reserve_val * 0.2)
+    - RPE_trend: based on difficulty_after (1-3) of last 3 workouts (1/2 -> 100, 3 -> 30) weighted [0.5, 0.3, 0.2]
+    - morning_feeling: 1-5 mapped to 20-100
+    - last_reserve: 1-2 mapped to 0-100 (1 -> 0, 2 -> 100)
+    """
+    # 1. Morning feeling: 1-5 -> 20-100
+    feeling_val = 60.0 # default/neutral
+    if morning_feeling is not None:
+        feeling_val = float(morning_feeling) * 20.0
+        
+    # 2. Last reserve: 1-2 -> 0-100 (1: No -> 0, 2: Yes -> 100)
+    reserve_val = 100.0 # default
+    if last_reserve is not None:
+        reserve_val = 100.0 if last_reserve == 2 else 0.0
+        
+    # 3. RPE trend from last 3 workouts (newest first)
+    # Map difficulty_after to scores: 1 (easy) -> 100, 2 (planned) -> 100, 3 (too hard) -> 30
+    rpe_scores = []
+    for val in rpe_history:
+        if val is not None:
+            if val == 3:
+                rpe_scores.append(30.0)
+            else:
+                rpe_scores.append(100.0)
+                
+    # Pad to 3 elements with 100.0 (neutral/good)
+    while len(rpe_scores) < 3:
+        rpe_scores.append(100.0)
+        
+    # Take first 3 and apply weights [0.5, 0.3, 0.2]
+    rpe_trend = rpe_scores[0] * 0.5 + rpe_scores[1] * 0.3 + rpe_scores[2] * 0.2
+    
+    # Final ReadyScore
+    readyscore = (rpe_trend * 0.4) + (feeling_val * 0.4) + (reserve_val * 0.2)
+    return float(readyscore)
+

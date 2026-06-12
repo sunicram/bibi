@@ -18,5 +18,6 @@ COPY . .
 
 EXPOSE 8000
 
-# Start Uvicorn developer server by default
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Start via start.sh to run migrations and seed data on startup
+RUN chmod +x start.sh
+CMD ["./start.sh"]

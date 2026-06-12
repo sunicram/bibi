@@ -74,3 +74,107 @@ def calculate_aerobic_decoupling(power_series: List[int], hr_series: List[int]) 
         
     decoupling = (ef1 - ef2) / ef1 * 100
     return float(decoupling)
+
+def calculate_teq_score(power_series: List[int], intervals: List[dict], ftp: int, tolerance_pct: float = 0.05) -> float:
+    """Calculates the Training Execution Quality (TEQ) score for a workout.
+    
+    For steps >= 1 minute (60s):
+    - Applies 10s transition buffer (ignores first 10s).
+    - Checks 10s SMA deviation from target power range [target*(1-tol), target*(1+tol)].
+    
+    For steps < 1 minute:
+    - Checks deviation of step average power from target power range.
+    """
+    if not power_series or not intervals or ftp <= 0:
+        return 100.0
+
+    current_idx = 0
+    step_weighted_teq_sum = 0.0
+    total_analyzed_duration = 0
+    
+    for step in intervals:
+        step_dur = int(step.get("duration_seconds", 0))
+        if step_dur <= 0:
+            continue
+            
+        # Extract step actual power
+        step_power = power_series[current_idx : current_idx + step_dur]
+        current_idx += step_dur
+        
+        if not step_power:
+            continue
+            
+        target_pct = float(step.get("target_power_pct", 100.0))
+        target_power = ftp * (target_pct / 100.0)
+        p_min = target_power * (1.0 - tolerance_pct)
+        p_max = target_power * (1.0 + tolerance_pct)
+        
+        actual_step_len = len(step_power)
+        
+        if actual_step_len >= 60:
+            # Step >= 1 minute: apply 10s transition buffer and 10s SMA
+            # Ignores first 10 seconds of the step
+            errors = []
+            for i in range(10, actual_step_len):
+                # Calculate 10s SMA ending at i
+                sma_val = sum(step_power[i-9 : i+1]) / 10.0
+                if sma_val < p_min:
+                    err = (p_min - sma_val) / p_min
+                elif sma_val > p_max:
+                    err = (sma_val - p_max) / p_max
+                else:
+                    err = 0.0
+                errors.append(err)
+            
+            step_error = sum(errors) / len(errors) if errors else 0.0
+            step_teq = max(0.0, 1.0 - step_error) * 100.0
+        else:
+            # Step < 1 minute: use step average power
+            avg_p = sum(step_power) / len(step_power)
+            if avg_p < p_min:
+                err = (p_min - avg_p) / p_min
+            elif avg_p > p_max:
+                err = (avg_p - p_max) / p_max
+            else:
+                err = 0.0
+            step_teq = max(0.0, 1.0 - err) * 100.0
+            
+        step_weighted_teq_sum += step_teq * actual_step_len
+        total_analyzed_duration += actual_step_len
+
+    if total_analyzed_duration <= 0:
+        return 100.0
+        
+    return float(step_weighted_teq_sum / total_analyzed_duration)
+
+def calculate_workout_stimulus_score(intervals: List[dict], tss: float) -> float:
+    """Calculates the Stimulus Weight (WS) for a workout.
+    Formula: WS = (T_target_zone * W_intensity) + (TSS * 0.2)
+    """
+    if not intervals:
+        return float(tss * 0.2)
+        
+    ws_intervals = 0.0
+    for step in intervals:
+        duration_sec = int(step.get("duration_seconds", 0))
+        target_pct = float(step.get("target_power_pct", 100.0))
+        
+        # Map target_pct to Coggan zone intensity weight (W_intensity)
+        # Z5+ (VO2 Max / Anaerobic) -> 2.0
+        # Z3/Z4 (Sweet Spot / Threshold) -> 1.5
+        # Z2 (Endurance) -> 0.5
+        # Z1 (Active Recovery) -> 0.0
+        if target_pct >= 106.0: # Z5+
+            w_intensity = 2.0
+        elif target_pct >= 76.0: # Z3/Z4
+            w_intensity = 1.5
+        elif target_pct >= 56.0: # Z2
+            w_intensity = 0.5
+        else: # Z1
+            w_intensity = 0.0
+            
+        duration_min = duration_sec / 60.0
+        ws_intervals += duration_min * w_intensity
+        
+    return float(ws_intervals + (tss * 0.2))
+

@@ -29,11 +29,15 @@ class Profile(Base):
     resting_hr = Column(Integer, default=60, nullable=False)
     max_hr = Column(Integer, default=190, nullable=False)
     weight_kg = Column(Float, default=75.0, nullable=False)
+    body_fat_pct = Column(Float, nullable=True)
+    muscle_mass_pct = Column(Float, nullable=True)
+    water_pct = Column(Float, nullable=True)
     power_zones = Column(JSON, nullable=True) # 7 Coggan zones
     hr_zones = Column(JSON, nullable=True) # 5 LTHR zones
     weekly_availability = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
 
     user = relationship("User", back_populates="profile")
 

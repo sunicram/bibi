@@ -120,3 +120,62 @@ def test_policy_weekly_tss_cap():
     capped, rules, exp = PolicyEngine.enforce_weekly_tss_guardrail(400.0, 500.0, 0.20)
     assert capped == 480.0
     assert "WEEKLY_TSS_SPIKE_CAP" in rules
+
+# --- Test new functions (TEQ, WS, Simplified ReadyScore) ---
+def test_teq_score_steady():
+    from app.ml.metrics import calculate_teq_score
+    # Target power 200W (FTP = 200, target_power_pct = 100)
+    intervals = [
+        {"duration_seconds": 60, "target_power_pct": 100}
+    ]
+    # Perfect execution (all 200W)
+    power = [200] * 60
+    score = calculate_teq_score(power, intervals, ftp=200)
+    assert score == 100.0
+
+def test_teq_score_deviation():
+    from app.ml.metrics import calculate_teq_score
+    intervals = [
+        {"duration_seconds": 60, "target_power_pct": 100}
+    ]
+    # Under-target execution (all 150W -> 25% error)
+    power = [150] * 60
+    score = calculate_teq_score(power, intervals, ftp=200)
+    # The first 10 seconds is transition buffer (ignored).
+    # From sec 10 to 59, the power is 150W.
+    # Target range is [200*0.95, 200*1.05] = [190, 210].
+    # Error for each second = (190 - 150) / 190 = 40/190 = 0.2105
+    # So TEQ should be ~ 78.9%
+    assert abs(score - 78.94) < 0.1
+
+def test_teq_sprints():
+    from app.ml.metrics import calculate_teq_score
+    intervals = [
+        {"duration_seconds": 30, "target_power_pct": 150} # sprint < 1 min
+    ]
+    # FTP = 200 -> target = 300W. tolerance range = [285, 315]
+    # Average power is 300W
+    power = [300] * 30
+    score = calculate_teq_score(power, intervals, ftp=200)
+    assert score == 100.0
+
+def test_workout_stimulus_score():
+    from app.ml.metrics import calculate_workout_stimulus_score
+    intervals = [
+        {"duration_seconds": 600, "target_power_pct": 110}, # 10 mins Z5+ -> W = 2.0 -> WS_int = 20.0
+        {"duration_seconds": 1200, "target_power_pct": 90}   # 20 mins Z3/Z4 -> W = 1.5 -> WS_int = 30.0
+    ]
+    # Total WS = 20.0 + 30.0 + 100 * 0.2 = 70.0
+    score = calculate_workout_stimulus_score(intervals, tss=100.0)
+    assert score == 70.0
+
+def test_simplified_readyscore():
+    from app.ml.wellness import calculate_simplified_readyscore
+    # Last 3 workouts: one too hard (3), two ok (2)
+    # rpe_scores: 30, 100, 100 -> RPE trend = 30*0.5 + 100*0.3 + 100*0.2 = 15 + 30 + 20 = 65
+    # morning feeling: 4 -> 4 * 20 = 80
+    # last reserve: 1 (No) -> 0
+    # ReadyScore = 65 * 0.4 + 80 * 0.4 + 0 * 0.2 = 26 + 32 + 0 = 58
+    score = calculate_simplified_readyscore([3, 2, 2], morning_feeling=4, last_reserve=1)
+    assert score == 58.0
+

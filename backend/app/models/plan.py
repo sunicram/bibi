@@ -81,7 +81,13 @@ class Activity(Base):
     aerobic_decoupling = Column(Float, nullable=True) # Decoupling value (Pw:HR)
     wbal_depleted_flag = Column(Boolean, default=False, nullable=False)
     adherence_score = Column(Float, nullable=False) # % match with workout target
+    activity_notes = Column(String, nullable=True)
+    feeling_before = Column(Integer, nullable=True)
+    difficulty_after = Column(Integer, nullable=True)
+    reserve_forces = Column(Integer, nullable=True)
+    teq_score = Column(Float, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
 
     workout = relationship("Workout", back_populates="activities")
     user = relationship("User", back_populates="activities")
@@ -117,7 +123,12 @@ class WellnessDaily(Base):
     sleep_debt_minutes = Column(Integer, nullable=True)
     readiness_tier = Column(String, default="green", nullable=False) # "green" | "yellow" | "red"
     data_quality_flag = Column(String, default="measured", nullable=False) # "measured" | "estimated" | "missing"
+    weight_kg = Column(Float, nullable=True)
+    body_fat_pct = Column(Float, nullable=True)
+    muscle_mass_pct = Column(Float, nullable=True)
+    water_pct = Column(Float, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
 
     user = relationship("User", back_populates="wellness_records")

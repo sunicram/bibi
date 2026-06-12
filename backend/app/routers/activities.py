@@ -2,7 +2,7 @@ import os
 from uuid import UUID
 import numpy as np
 from datetime import date, datetime, timedelta
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, status
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
@@ -138,6 +138,7 @@ def calculate_adherence(actual_power: List[int], workout: Optional[Workout], ftp
 async def upload_activity(
     file: UploadFile = File(...),
     workout_id: Optional[UUID] = None,
+    activity_notes: Optional[str] = Form(None),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -147,6 +148,18 @@ async def upload_activity(
         
     file_bytes = await file.read()
     
+    # Parse regex bb: X/Y/Z from notes
+    feeling_before = None
+    difficulty_after = None
+    reserve_forces = None
+    if activity_notes:
+        import re
+        match = re.search(r'bb:\s*([1-5])/([1-3])/([1-2])', activity_notes, re.IGNORECASE)
+        if match:
+            feeling_before = int(match.group(1))
+            difficulty_after = int(match.group(2))
+            reserve_forces = int(match.group(3))
+            
     # Try parsing real FIT data, fallback to simulation if parsing fails
     is_simulated = False
     try:
@@ -168,12 +181,20 @@ async def upload_activity(
     # Calculate W'bal battery
     wbal_series, wbal_depleted = calculate_wbal_series(power, profile.ftp, profile.w_prime)
     
-    # Calculate Adherence
+    # Get associated workout
     workout = None
     if workout_id:
         workout = db.query(Workout).filter(Workout.id == workout_id).first()
+        
+    # Calculate Adherence
     adherence = calculate_adherence(power, workout, profile.ftp)
     
+    # Calculate TEQ (Training Execution Quality)
+    teq_val = None
+    if workout and workout.intervals_json:
+        from app.ml.metrics import calculate_teq_score
+        teq_val = calculate_teq_score(power, workout.intervals_json, profile.ftp)
+        
     # Write Activity record
     db_activity = Activity(
         workout_id=workout_id,
@@ -188,6 +209,11 @@ async def upload_activity(
         aerobic_decoupling=decoupling,
         wbal_depleted_flag=wbal_depleted,
         adherence_score=adherence,
+        activity_notes=activity_notes,
+        feeling_before=feeling_before,
+        difficulty_after=difficulty_after,
+        reserve_forces=reserve_forces,
+        teq_score=teq_val,
         created_at=datetime.utcnow()
     )
     db.add(db_activity)
